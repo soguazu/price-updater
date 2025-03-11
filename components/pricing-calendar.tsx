@@ -1,5 +1,7 @@
 'use client';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { CalendarIcon, Check, DollarSign, Save } from 'lucide-react';
 import {
@@ -15,6 +17,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ToastContainer, toast } from 'react-toastify';
 import { addDays, format, isAfter, isSameMonth, startOfDay } from 'date-fns';
 import {
   updateMultipleDatePrice,
@@ -26,12 +29,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type React from 'react';
-import { Switch } from '@/components/ui/switch';
-import { ToastContainer } from 'react-toastify';
 import { cn } from '@/lib/utils';
-import { signOut } from 'next-auth/react';
 import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
 
 // Define the price data structure
 type PriceData = {
@@ -39,7 +38,6 @@ type PriceData = {
 };
 
 export default function PricingCalendar() {
-  const { toast } = useToast();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
@@ -56,17 +54,6 @@ export default function PricingCalendar() {
   const [rangeDateOpen, setRangeDateOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [basePrice, setBasePrice] = useState<number>(0);
-
-  // Function to get the price for a specific date
-  const getPriceForDate = (date: Date): number => {
-    // Check if date is valid before formatting
-    if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
-      return basePrice; // Default price for invalid dates
-    }
-
-    const dateString = format(date, 'yyyy-MM-dd');
-    return priceData[dateString] || basePrice; // Default price
-  };
 
   // Function to calculate pricing summary for single date
   const calculateSinglePricingSummary = () => {
@@ -134,11 +121,7 @@ export default function PricingCalendar() {
   // Function to update a single date price
   const updateSingleDatePrice = async () => {
     if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
-      toast({
-        title: 'Date required',
-        description: 'Please select a valid date',
-        variant: 'destructive',
-      });
+      toast.error('Please select a valid date');
       return;
     }
 
@@ -146,11 +129,7 @@ export default function PricingCalendar() {
     const newPrice = Number.parseInt(singlePrice);
 
     if (isNaN(newPrice) || newPrice <= 0) {
-      toast({
-        title: 'Invalid price',
-        description: 'Please enter a valid price greater than 0',
-        variant: 'destructive',
-      });
+      toast.error('Please enter a valid price greater than 0');
       return;
     }
 
@@ -171,8 +150,11 @@ export default function PricingCalendar() {
       if (isSameMonth(date, currentMonth)) {
         setCurrentMonth(new Date(date));
       }
+
+      toast.success('Price updated successfully');
     } catch (error) {
       console.error('Failed to update price:', error);
+      toast.error('Failed to update price');
     }
   };
 
@@ -186,22 +168,14 @@ export default function PricingCalendar() {
       isNaN(dateRange.from.getTime()) ||
       isNaN(dateRange.to.getTime())
     ) {
-      toast({
-        title: 'Date range required',
-        description: 'Please select both start and end dates',
-        variant: 'destructive',
-      });
+      toast.error('Please select both start and end dates');
       return;
     }
 
     const newPrice = Number.parseInt(rangePrice);
 
     if (isNaN(newPrice) || newPrice <= 0) {
-      toast({
-        title: 'Invalid price',
-        description: 'Please enter a valid price greater than 0',
-        variant: 'destructive',
-      });
+      toast.error('Please enter a valid price greater than 0');
       return;
     }
 
@@ -225,8 +199,11 @@ export default function PricingCalendar() {
       if (dateRange.from && isSameMonth(dateRange.from, currentMonth)) {
         setCurrentMonth(new Date(dateRange.from));
       }
+
+      toast.success('Prices updated successfully');
     } catch (error) {
       console.error('Failed to update prices:', error);
+      toast.error('Failed to update prices');
     }
   };
 
