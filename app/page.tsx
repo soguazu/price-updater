@@ -65,7 +65,7 @@ export default function Home() {
               className="w-[200px]"
             >
               <DropdownMenuItem className="select-none !cursor-default opacity-50">
-                <span className="truncate">{session?.user?.email}</span>
+                <span className="truncate">{}</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: '/login' })}
