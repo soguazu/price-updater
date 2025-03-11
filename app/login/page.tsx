@@ -14,9 +14,15 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Modak } from 'next/font/google';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+const modak = Modak({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -52,7 +58,12 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <h1
+          className={`text-[#E36B37] text-4xl md:text-[56px] mb-8 ${modak.className}`}
+        >
+          Reeka
+        </h1>
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>

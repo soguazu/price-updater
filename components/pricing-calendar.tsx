@@ -209,7 +209,7 @@ export default function PricingCalendar() {
 
   return (
     <>
-      <div className="flex justify-center min-h-fit w-[50%]">
+      <div className="flex justify-center min-h-fit w-[35%]">
         <Card className="w-full">
           <CardHeader className="bg-[#E36B37]/5">
             <CardTitle>Update Pricing</CardTitle>

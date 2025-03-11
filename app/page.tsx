@@ -9,11 +9,17 @@ import {
 import { LogOut, User } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Modak } from 'next/font/google';
 import PricingCalendar from '@/components/pricing-calendar';
 import { signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+
+const modak = Modak({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -36,7 +42,12 @@ export default function Home() {
   if (status === 'authenticated') {
     return (
       <>
-        <div className="fixed top-4 right-4">
+        <header className="fixed top-0 left-0 right-0 p-4 flex justify-between items-center bg-white">
+          <h1
+            className={`text-[#E36B37] text-2xl md:text-[40px] ${modak.className}`}
+          >
+            Reeka
+          </h1>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -53,6 +64,9 @@ export default function Home() {
               align="end"
               className="w-[200px]"
             >
+              <DropdownMenuItem className="select-none !cursor-default opacity-50">
+                <span className="truncate">{session?.user?.email}</span>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: '/login' })}
                 className="text-red-600"
@@ -62,13 +76,13 @@ export default function Home() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-        <main className="min-h-screen bg-white">
+        </header>
+        <main className="min-h-screen bg-white pt-24">
           <div className="container max-w-6xl px-4 py-8 flex flex-col items-center justify-center">
-            <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">
-              Pricing Calendar
+            <h1 className="mb-2 text-2xl font-bold tracking-tight md:text-2xl">
+              Update Pricing
             </h1>
-            <p className="mb-8 text-lg text-gray-600">
+            <p className="mb-8 text-sm text-gray-600">
               Update your listing prices by date or range
             </p>
             <PricingCalendar />
