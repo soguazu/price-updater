@@ -29,6 +29,7 @@ import type React from 'react';
 import { Switch } from '@/components/ui/switch';
 import { ToastContainer } from 'react-toastify';
 import { cn } from '@/lib/utils';
+import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 

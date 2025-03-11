@@ -1,18 +1,17 @@
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 });
 
-// Add request interceptor to add access token
+// Add request interceptor to add access token from session
 api.interceptors.request.use(
-  (config) => {
-    const token =
-      localStorage.getItem('accessToken') ||
-      process.env.NEXT_PUBLIC_ACCESS_TOKEN;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    const session = await getSession();
+    if (session?.accessToken) {
+      config.headers.Authorization = `Bearer ${session.accessToken}`;
     }
     return config;
   },
@@ -31,21 +30,19 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken =
-          localStorage.getItem('refreshToken') ||
-          process.env.NEXT_PUBLIC_REFRESH_TOKEN;
+        const session = await getSession();
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh-token`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${refreshToken}`,
+              Authorization: `Bearer ${session?.refreshToken}`,
             },
           }
         );
 
         const { accessToken } = response.data;
-        localStorage.setItem('accessToken', accessToken);
+        // The session will be updated automatically by Next-Auth
 
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api(originalRequest);

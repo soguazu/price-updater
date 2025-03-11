@@ -1,5 +1,10 @@
+// 'use client';
+
 import './globals.css';
 
+import { Bounce, ToastContainer } from 'react-toastify';
+
+import AuthProvider from '@/components/providers/session-provider';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,12 +14,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
+      </body>
     </html>
   );
 }
