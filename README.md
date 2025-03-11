@@ -35,8 +35,6 @@ pnpm install
 
 ```env
 NEXT_PUBLIC_API_BASE_URL=<your-api-base-url>
-NEXT_PUBLIC_ACCESS_TOKEN=<your-access-token>
-NEXT_PUBLIC_REFRESH_TOKEN=<your-refresh-token>
 NEXT_PUBLIC_PROPERTY_ID=<your-property-id>
 ```
 
