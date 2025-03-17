@@ -36,6 +36,8 @@ pnpm install
 ```env
 NEXT_PUBLIC_API_BASE_URL=<your-api-base-url>
 NEXT_PUBLIC_PROPERTY_ID=<your-property-id>
+NEXTAUTH_SECRET=<your-secret>
+NEXTAUTH_URL=http://localhost:3000
 ```
 
 ## Development
